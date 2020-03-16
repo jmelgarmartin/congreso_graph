@@ -67,12 +67,11 @@ def return_grupos_palabras(palabra):
     return query
 
 
-def insert_relation(diputado, palabra, num_pleno):
+def insert_relation(diputado, palabra, num_pleno, veces):
     query = 'MATCH (d:Diputado), (p:Palabra) '
     query = query + 'WHERE d.apellidos = "' + diputado + '" '
     query = query + 'AND p.palabra = "' + palabra + '" '
     query = query + 'WITH d as dip, p as pal '
     query = query + 'MERGE(dip) - [r: DICE_' + num_pleno.replace('-', '_') + ' {pleno: "' + num_pleno + '"}]->(pal) '
-    query = query + 'ON CREATE SET r.grupo = dip.grupo , r.veces = 1 '
-    query = query + 'ON MATCH SET r.veces = r.veces + 1'
+    query = query + 'ON CREATE SET r.grupo = dip.grupo , r.veces = ' + str(veces) + ' '
     return query
